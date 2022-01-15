@@ -184,15 +184,7 @@ defmodule GoodTimes do
         count,
         :second
       ) do
-    result =
-      dt
-      |> DateTime.to_unix(:microsecond)
-      |> (&(&1 - rem(&1, count * 1_000_000))).()
-      |> (&(&1 / 1_000_000)).()
-      |> trunc()
-      |> DateTime.from_unix(:second)
-
-    case result do
+    case unix_wrap(dt, :second, &(&1 - rem(&1, count))) do
       {:ok, val} -> val
       other -> other
     end
