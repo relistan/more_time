@@ -64,6 +64,11 @@ defmodule GoodTimesTest do
       assert GoodTimes.beginning_of_day(~U[2022-01-13 14:07:06.098765Z]) == ~U[2022-01-13 00:00:00Z]
     end
 
+    test "it matches the output from bucket/3" do
+      assert GoodTimes.bucket(~U[2022-01-13 14:07:06.098765Z], 1, :day) ==
+               GoodTimes.beginning_of_day(~U[2022-01-13 14:07:06.098765Z])
+    end
+
     test "it finds the end of the day" do
       assert GoodTimes.end_of_day(~U[2022-01-13 14:07:06.098765Z]) == ~U[2022-01-13 23:59:59.999999Z]
     end

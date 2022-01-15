@@ -13,7 +13,20 @@ defmodule GoodTimes do
   starting from the beginning of time (unix epoch). It returns a DateTime.
   This uses common expectations about what an minute, hour, day, etc are in
   seconds. It preserves any calender and time zone information.
+
+  ## Examples
+
+      iex> GoodTimes.bucket(~U[2021-01-13 14:07:06.098765Z], 1, :day)
+      ~U[2021-01-13 00:00:00Z]
+
+      iex> GoodTimes.bucket(~U[2021-02-17 14:53:06.098765Z], 23, :day)
+      ~U[2021-01-26 00:00:00Z]
+
+      iex> GoodTimes.bucket(~U[2021-01-13 14:07:06.098765Z], 1, :hour)
+      ~U[2021-01-13 14:00:00Z]
+
   """
+  # Optimized implementation for a single day
   def bucket(dt, 1, :day) do
     beginning_of_day(dt)
   end
@@ -38,8 +51,30 @@ defmodule GoodTimes do
       ) do
     case unix_wrap(dt, :second, &(&1 - rem(&1, count * @day_in_hours * @hour_in_mins * @minute_in_secs))) do
       {:ok, result} -> result
-      _ -> raise ArgumentError, message: "that doesn't seem to be a DateTime or similar"
+      other -> other
     end
+  end
+
+  # Optimized implementation for a single hour
+  def bucket(
+        %{
+          year: _,
+          month: _,
+          day: _,
+          calendar: _,
+          hour: _,
+          minute: _,
+          second: _,
+          microsecond: _,
+          std_offset: _,
+          utc_offset: _,
+          zone_abbr: _,
+          time_zone: _
+        } = dt,
+        1,
+        :hour
+      ) do
+    Map.merge(dt, %{minute: 0, second: 0, microsecond: {0, 0}})
   end
 
   def bucket(
@@ -62,8 +97,30 @@ defmodule GoodTimes do
       ) do
     case unix_wrap(dt, :second, &(&1 - rem(&1, count * @hour_in_mins * @minute_in_secs))) do
       {:ok, result} -> result
-      _ -> raise ArgumentError, message: "that doesn't seem to be a DateTime or similar"
+      other -> other
     end
+  end
+
+  # Optimized implementation for a single minute
+  def bucket(
+        %{
+          year: _,
+          month: _,
+          day: _,
+          calendar: _,
+          hour: _,
+          minute: _,
+          second: _,
+          microsecond: _,
+          std_offset: _,
+          utc_offset: _,
+          zone_abbr: _,
+          time_zone: _
+        } = dt,
+        1,
+        :minute
+      ) do
+    Map.merge(dt, %{second: 0, microsecond: {0, 0}})
   end
 
   def bucket(
@@ -86,7 +143,7 @@ defmodule GoodTimes do
       ) do
     case unix_wrap(dt, :second, &(&1 - rem(&1, count * @minute_in_secs))) do
       {:ok, result} -> result
-      _ -> raise ArgumentError, message: "that doesn't seem to be a DateTime or similar"
+      other -> other
     end
   end
 
@@ -118,7 +175,7 @@ defmodule GoodTimes do
 
     case result do
       {:ok, val} -> val
-      _ -> raise ArgumentError, message: "that doesn't seem to be a DateTime or similar"
+      other -> other
     end
   end
 
@@ -127,21 +184,23 @@ defmodule GoodTimes do
   and day information from the passed-in DateTime-like map. It preserves time
   zone and calendar information.
   """
-  def beginning_of_day(%{
-        year: _,
-        month: _,
-        day: _,
-        calendar: _,
-        hour: _,
-        minute: _,
-        second: _,
-        microsecond: _,
-        std_offset: _,
-        utc_offset: _,
-        zone_abbr: _,
-        time_zone: _
-      } = dt) do
-      Map.merge(dt, %{hour: 0, minute: 0, second: 0, microsecond: {0, 0}})
+  def beginning_of_day(
+        %{
+          year: _,
+          month: _,
+          day: _,
+          calendar: _,
+          hour: _,
+          minute: _,
+          second: _,
+          microsecond: _,
+          std_offset: _,
+          utc_offset: _,
+          zone_abbr: _,
+          time_zone: _
+        } = dt
+      ) do
+    Map.merge(dt, %{hour: 0, minute: 0, second: 0, microsecond: {0, 0}})
   end
 
   @doc """
@@ -167,7 +226,7 @@ defmodule GoodTimes do
           time_zone: _
         } = dt
       ) do
-      Map.merge(dt, %{hour: 23, minute: 59, second: 59, microsecond: {999999, 6}})
+    Map.merge(dt, %{hour: 23, minute: 59, second: 59, microsecond: {999_999, 6}})
   end
 
   @doc """
@@ -191,7 +250,6 @@ defmodule GoodTimes do
           time_zone: _
         } = dt
       ) do
-
     {day_of_week, _, _} = calendar.day_of_week(year, month, day, :default)
     subbed_days = 0 - day_of_week + 1
 
@@ -277,7 +335,6 @@ defmodule GoodTimes do
           time_zone: _
         } = dt
       ) do
-
     days_in_month = calendar.days_in_month(year, month)
 
     dt
@@ -306,7 +363,6 @@ defmodule GoodTimes do
           time_zone: _
         } = dt
       ) do
-
     dt
     |> Map.merge(%{month: 1, day: 1})
     |> beginning_of_day()
@@ -333,7 +389,6 @@ defmodule GoodTimes do
           time_zone: _
         } = dt
       ) do
-
     dt
     |> Map.merge(%{month: 12, day: 31})
     |> end_of_day()
