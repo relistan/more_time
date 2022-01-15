@@ -1,7 +1,11 @@
 defmodule GoodTimes do
   @moduledoc """
   GoodTimes contains some helpful functions for operating on DateTime-like
-  maps.
+  maps. These are useful for rounding and bucketing times in a stable way.
+
+  Like the standard library, it operates on maps that have the set of keys that
+  are used by DateTime. Any other map/struct that has the same keys
+  should work with these functions.
   """
 
   @minute_in_secs 60
@@ -225,10 +229,7 @@ defmodule GoodTimes do
 
   @doc """
   Takes a DateTime-like map, and returns a DateTime set to the last microsecond
-  of the specified day. It converts to unix micros and does math on that
-  because DateTime.add(-1, :microsecond) returns precision based on input
-  precision, so it always has 1 second precision. But, we always want
-  microsecond precision out.
+  of the specified day.
 
   ## Examples
 
