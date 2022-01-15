@@ -9,10 +9,14 @@ defmodule GoodTimes do
   @day_in_hours 24
 
   @doc """
-  bucket/3 takes a DateTime-like map and buckets it by the time unit supplied,
-  starting from the beginning of time (unix epoch). It returns a DateTime.
-  This uses common expectations about what an minute, hour, day, etc are in
-  seconds. It preserves any calender and time zone information.
+  Takes a DateTime-like map and buckets it by the time unit supplied, starting
+  from the beginning of time (unix epoch). It returns a DateTime.  This uses
+  common expectations about what an minute, hour, day, etc are in seconds. It
+  preserves any calender and time zone information.
+
+  Valid bucket sizes are one of:
+
+    :day, :hour, :minute, :second
 
   ## Examples
 
@@ -180,9 +184,14 @@ defmodule GoodTimes do
   end
 
   @doc """
-  beginning_of_day/1 returns a DateTime struct that carries over the year, month
-  and day information from the passed-in DateTime-like map. It preserves time
-  zone and calendar information.
+  Returns a DateTime struct that carries over the year, month and day
+  information from the passed-in DateTime-like map. It preserves time zone and
+  calendar information.
+
+  ## Examples
+
+      iex> GoodTimes.beginning_of_day(~U[2022-01-13 14:07:06.098765Z])
+      ~U[2022-01-13 00:00:00Z]
   """
   def beginning_of_day(
         %{
@@ -204,11 +213,16 @@ defmodule GoodTimes do
   end
 
   @doc """
-  end_of_day/1 takes a DateTime-like map, and returns a DateTime set to the
-  last microsecond of the specified day. It converts to unix micros and does
-  math on that because DateTime.add(-1, :microsecond) returns precision based
-  on input precision, so it always has 1 second precision. But, we always
-  want microsecond precision out.
+  Takes a DateTime-like map, and returns a DateTime set to the last microsecond
+  of the specified day. It converts to unix micros and does math on that
+  because DateTime.add(-1, :microsecond) returns precision based on input
+  precision, so it always has 1 second precision. But, we always want
+  microsecond precision out.
+
+  ## Examples
+
+      iex> GoodTimes.end_of_day(~U[2022-01-13 14:07:06.098765Z])
+      ~U[2022-01-13 23:59:59.999999Z]
   """
   def end_of_day(
         %{
@@ -230,9 +244,14 @@ defmodule GoodTimes do
   end
 
   @doc """
-  beginning_of_week/1 accepts a DateTime-like map and returns a DateTime
-  pointing to the start of the week in which that input DateTime falls. It uses
-  the original Calendar to do that, so it should work for different calendars.
+  Accepts a DateTime-like map and returns a DateTime pointing to the start of
+  the week in which that input DateTime falls. It uses the original Calendar to
+  do that, so it should work for different calendars.
+
+  ## Examples
+
+      iex> GoodTimes.beginning_of_week(~U[2022-01-13 14:07:06.098765Z])
+      ~U[2022-01-10 00:00:00Z]
   """
   def beginning_of_week(
         %{
@@ -259,9 +278,14 @@ defmodule GoodTimes do
   end
 
   @doc """
-  end_of_week/1 accepts a DateTime-like map and returns a DateTime pointing to
-  the end of the week in which that input DateTime falls. It uses the original
-  Calendar to do that, so it should work for different calendars.
+  Accepts a DateTime-like map and returns a DateTime pointing to the end of the
+  week in which that input DateTime falls. It uses the original Calendar to do
+  that, so it should work for different calendars.
+
+  ## Examples
+
+      iex> GoodTimes.end_of_week(~U[2022-01-13 14:07:06.098765Z])
+      ~U[2022-01-16 23:59:59.999999Z]
   """
   def end_of_week(
         %{
@@ -288,10 +312,14 @@ defmodule GoodTimes do
   end
 
   @doc """
-  beginning_of_month/1 accepts a DateTime-like map and returns a DateTime
-  pointing to the start of the month in which that input DateTime falls. It
-  uses the original Calendar to do that, so it should work for different
-  calendars.
+  Accepts a DateTime-like map and returns a DateTime pointing to the start of
+  the month in which that input DateTime falls. It uses the original Calendar
+  to do that, so it should work for different calendars.
+
+  ## Examples
+
+      iex> GoodTimes.beginning_of_month(~U[2022-01-13 14:07:06.098765Z])
+      ~U[2022-01-01 00:00:00Z]
   """
   def beginning_of_month(
         %{
@@ -315,9 +343,14 @@ defmodule GoodTimes do
   end
 
   @doc """
-  end_of_month/1 accepts a DateTime-like map and returns a DateTime pointing to
-  the end of the month in which that input DateTime falls. It uses the original
-  Calendar to do that, so it should work for different calendars.
+  Accepts a DateTime-like map and returns a DateTime pointing to the end of the
+  month in which that input DateTime falls. It uses the original Calendar to do
+  that, so it should work for different calendars.
+
+  ## Examples
+
+      iex> GoodTimes.end_of_month(~U[2022-01-13 14:07:06.098765Z])
+      ~U[2022-01-31 23:59:59.999999Z]
   """
   def end_of_month(
         %{
@@ -343,9 +376,14 @@ defmodule GoodTimes do
   end
 
   @doc """
-  beginning_of_year/1 accepts a DateTime-like map and returns a DateTime pointing to
-  the start of the year in which that input DateTime falls. It uses the original
-  Calendar to do that, so it should work for different calendars.
+  Accepts a DateTime-like map and returns a DateTime pointing to the start of
+  the year in which that input DateTime falls. It uses the original Calendar to
+  do that, so it should work for different calendars.
+
+  ## Examples
+
+      iex> GoodTimes.beginning_of_year(~U[2022-01-13 14:07:06.098765Z])
+      ~U[2022-01-01 00:00:00Z]
   """
   def beginning_of_year(
         %{
@@ -369,9 +407,14 @@ defmodule GoodTimes do
   end
 
   @doc """
-  end_of_year/1 accepts a DateTime-like map and returns a DateTime pointing to
-  the end of the year in which that input DateTime falls. It uses the original
-  Calendar to do that, so it should work for different calendars.
+  Accepts a DateTime-like map and returns a DateTime pointing to the end of the
+  year in which that input DateTime falls. It uses the original Calendar to do
+  that, so it should work for different calendars.
+
+  ## Examples
+
+      iex> GoodTimes.end_of_year(~U[2022-01-13 14:07:06.098765Z])
+      ~U[2022-12-31 23:59:59.999999Z]
   """
   def end_of_year(
         %{
