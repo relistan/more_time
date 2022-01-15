@@ -14,9 +14,20 @@ defmodule GoodTimes do
   common expectations about what an minute, hour, day, etc are in seconds. It
   preserves any calender and time zone information.
 
+  Note that the bucketing algorithm is hard buckets since the beginning of the
+  epoch. That is desirable because it means you will always have stable bucket
+  sizes.
+
+  However, it might produce somewhat different results that you expect. For
+  example, 7 minute buckets begin from the start of the epoch, not from the
+  start of the day. This means the first 7 minute bucket of any particular day
+  might be the 3rd minute of the day. The same principle applies to the other
+  bucket sizes. Any bucket size by which a day can be evenly divided will,
+  however, always line up with the day.
+
   Valid bucket sizes are one of:
 
-    :day, :hour, :minute, :second
+    `:day`, `:hour`, `:minute`, `:second`
 
   ## Examples
 
