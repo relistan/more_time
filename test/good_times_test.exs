@@ -1,6 +1,6 @@
-defmodule GoodTimesTest do
+defmodule MoreTimeTest do
   use ExUnit.Case
-  doctest GoodTimes
+  doctest MoreTime
 
   describe "when bucketing times" do
     test "it buckets to the right day" do
@@ -13,7 +13,7 @@ defmodule GoodTimesTest do
               {~U[2021-01-30 02:23:06.098765Z], 7, :day, ~U[2021-01-28 00:00:00Z]},
               {~U[2021-02-17 14:53:06.098765Z], 23, :day, ~U[2021-01-26 00:00:00Z]}
             ] do
-        assert GoodTimes.bucket(input, count, unit) == expected
+        assert MoreTime.bucket(input, count, unit) == expected
       end
     end
 
@@ -27,7 +27,7 @@ defmodule GoodTimesTest do
               {~U[2021-01-13 02:23:06.098765Z], 7, :hour, ~U[2021-01-12 20:00:00Z]},
               {~U[2021-01-13 14:53:06.098765Z], 23, :hour, ~U[2021-01-13 13:00:00Z]}
             ] do
-        assert GoodTimes.bucket(input, count, unit) == expected
+        assert MoreTime.bucket(input, count, unit) == expected
       end
     end
 
@@ -41,7 +41,7 @@ defmodule GoodTimesTest do
               {~U[2021-01-13 14:23:06.098765Z], 7, :minute, ~U[2021-01-13 14:19:00Z]},
               {~U[2021-01-13 14:53:06.098765Z], 23, :minute, ~U[2021-01-13 14:32:00Z]}
             ] do
-        assert GoodTimes.bucket(input, count, unit) == expected
+        assert MoreTime.bucket(input, count, unit) == expected
       end
     end
 
@@ -54,23 +54,23 @@ defmodule GoodTimesTest do
               {~U[2021-01-13 14:23:57.098765Z], 7, :second, ~U[2021-01-13 14:23:54Z]},
               {~U[2021-01-13 14:53:06.098765Z], 23, :second, ~U[2021-01-13 14:53:05Z]}
             ] do
-        assert GoodTimes.bucket(input, count, unit) == expected
+        assert MoreTime.bucket(input, count, unit) == expected
       end
     end
   end
 
   describe "when book-ending days" do
     test "it finds the start of the day" do
-      assert GoodTimes.beginning_of_day(~U[2022-01-13 14:07:06.098765Z]) == ~U[2022-01-13 00:00:00Z]
+      assert MoreTime.beginning_of_day(~U[2022-01-13 14:07:06.098765Z]) == ~U[2022-01-13 00:00:00Z]
     end
 
     test "it matches the output from bucket/3" do
-      assert GoodTimes.bucket(~U[2022-01-13 14:07:06.098765Z], 1, :day) ==
-               GoodTimes.beginning_of_day(~U[2022-01-13 14:07:06.098765Z])
+      assert MoreTime.bucket(~U[2022-01-13 14:07:06.098765Z], 1, :day) ==
+               MoreTime.beginning_of_day(~U[2022-01-13 14:07:06.098765Z])
     end
 
     test "it finds the end of the day" do
-      assert GoodTimes.end_of_day(~U[2022-01-13 14:07:06.098765Z]) == ~U[2022-01-13 23:59:59.999999Z]
+      assert MoreTime.end_of_day(~U[2022-01-13 14:07:06.098765Z]) == ~U[2022-01-13 23:59:59.999999Z]
     end
   end
 
@@ -82,11 +82,11 @@ defmodule GoodTimesTest do
               {~U[2011-12-31 01:07:06.123456Z], ~U[2012-01-01 23:59:59.999999Z]},
               {~U[2008-12-31 01:07:06.123456Z], ~U[2009-01-04 23:59:59.999999Z]}
             ] do
-        assert GoodTimes.end_of_week(input) == expected
+        assert MoreTime.end_of_week(input) == expected
       end
 
       {:ok, dt, _offset} = DateTime.from_iso8601("2022-01-13T14:07:06.098765+0100")
-      eow = GoodTimes.end_of_week(dt)
+      eow = MoreTime.end_of_week(dt)
 
       assert eow == ~U[2022-01-16 23:59:59.999999Z]
     end
@@ -98,7 +98,7 @@ defmodule GoodTimesTest do
               {~U[2011-12-31 01:07:06.123456Z], ~U[2011-12-26 00:00:00Z]},
               {~U[2008-12-31 01:07:06.123456Z], ~U[2008-12-29 00:00:00Z]}
             ] do
-        assert GoodTimes.beginning_of_week(input) == expected
+        assert MoreTime.beginning_of_week(input) == expected
       end
     end
   end
@@ -111,7 +111,7 @@ defmodule GoodTimesTest do
               {~U[2011-12-31 01:07:06.123456Z], ~U[2011-12-31 23:59:59.999999Z]},
               {~U[2008-12-05 01:07:06.123456Z], ~U[2008-12-31 23:59:59.999999Z]}
             ] do
-        assert GoodTimes.end_of_month(input) == expected
+        assert MoreTime.end_of_month(input) == expected
       end
     end
 
@@ -122,7 +122,7 @@ defmodule GoodTimesTest do
               {~U[2011-12-31 01:07:06.123456Z], ~U[2011-12-01 00:00:00Z]},
               {~U[2008-12-05 01:07:06.123456Z], ~U[2008-12-01 00:00:00Z]}
             ] do
-        assert GoodTimes.beginning_of_month(input) == expected
+        assert MoreTime.beginning_of_month(input) == expected
       end
     end
   end
@@ -135,7 +135,7 @@ defmodule GoodTimesTest do
               {~U[2011-12-31 01:07:06.123456Z], ~U[2011-12-31 23:59:59.999999Z]},
               {~U[2008-12-05 01:07:06.123456Z], ~U[2008-12-31 23:59:59.999999Z]}
             ] do
-        assert GoodTimes.end_of_year(input) == expected
+        assert MoreTime.end_of_year(input) == expected
       end
     end
 
@@ -146,7 +146,7 @@ defmodule GoodTimesTest do
               {~U[2011-12-31 01:07:06.123456Z], ~U[2011-01-01 00:00:00Z]},
               {~U[2008-12-05 01:07:06.123456Z], ~U[2008-01-01 00:00:00Z]}
             ] do
-        assert GoodTimes.beginning_of_year(input) == expected
+        assert MoreTime.beginning_of_year(input) == expected
       end
     end
   end

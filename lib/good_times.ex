@@ -1,6 +1,6 @@
-defmodule GoodTimes do
+defmodule MoreTime do
   @moduledoc """
-  GoodTimes contains some helpful functions for operating on DateTime-like
+  MoreTime contains some helpful functions for operating on DateTime-like
   maps. These are useful for rounding and bucketing times in a stable way.
 
   Like the standard library, it operates on maps that have the set of keys that
@@ -35,13 +35,13 @@ defmodule GoodTimes do
 
   ## Examples
 
-      iex> GoodTimes.bucket(~U[2021-01-13 14:07:06.098765Z], 1, :day)
+      iex> MoreTime.bucket(~U[2021-01-13 14:07:06.098765Z], 1, :day)
       ~U[2021-01-13 00:00:00Z]
 
-      iex> GoodTimes.bucket(~U[2021-02-17 14:53:06.098765Z], 23, :day)
+      iex> MoreTime.bucket(~U[2021-02-17 14:53:06.098765Z], 23, :day)
       ~U[2021-01-26 00:00:00Z]
 
-      iex> GoodTimes.bucket(~U[2021-01-13 14:07:06.098765Z], 1, :hour)
+      iex> MoreTime.bucket(~U[2021-01-13 14:07:06.098765Z], 1, :hour)
       ~U[2021-01-13 14:00:00Z]
 
   """
@@ -197,7 +197,7 @@ defmodule GoodTimes do
 
   ## Examples
 
-      iex> GoodTimes.beginning_of_day(~U[2022-01-13 14:07:06.098765Z])
+      iex> MoreTime.beginning_of_day(~U[2022-01-13 14:07:06.098765Z])
       ~U[2022-01-13 00:00:00Z]
   """
   def beginning_of_day(
@@ -225,7 +225,7 @@ defmodule GoodTimes do
 
   ## Examples
 
-      iex> GoodTimes.end_of_day(~U[2022-01-13 14:07:06.098765Z])
+      iex> MoreTime.end_of_day(~U[2022-01-13 14:07:06.098765Z])
       ~U[2022-01-13 23:59:59.999999Z]
   """
   def end_of_day(
@@ -254,7 +254,7 @@ defmodule GoodTimes do
 
   ## Examples
 
-      iex> GoodTimes.beginning_of_week(~U[2022-01-13 14:07:06.098765Z])
+      iex> MoreTime.beginning_of_week(~U[2022-01-13 14:07:06.098765Z])
       ~U[2022-01-10 00:00:00Z]
   """
   def beginning_of_week(
@@ -288,7 +288,7 @@ defmodule GoodTimes do
 
   ## Examples
 
-      iex> GoodTimes.end_of_week(~U[2022-01-13 14:07:06.098765Z])
+      iex> MoreTime.end_of_week(~U[2022-01-13 14:07:06.098765Z])
       ~U[2022-01-16 23:59:59.999999Z]
   """
   def end_of_week(
@@ -322,7 +322,7 @@ defmodule GoodTimes do
 
   ## Examples
 
-      iex> GoodTimes.beginning_of_month(~U[2022-01-13 14:07:06.098765Z])
+      iex> MoreTime.beginning_of_month(~U[2022-01-13 14:07:06.098765Z])
       ~U[2022-01-01 00:00:00Z]
   """
   def beginning_of_month(
@@ -353,7 +353,7 @@ defmodule GoodTimes do
 
   ## Examples
 
-      iex> GoodTimes.end_of_month(~U[2022-01-13 14:07:06.098765Z])
+      iex> MoreTime.end_of_month(~U[2022-01-13 14:07:06.098765Z])
       ~U[2022-01-31 23:59:59.999999Z]
   """
   def end_of_month(
@@ -386,7 +386,7 @@ defmodule GoodTimes do
 
   ## Examples
 
-      iex> GoodTimes.beginning_of_year(~U[2022-01-13 14:07:06.098765Z])
+      iex> MoreTime.beginning_of_year(~U[2022-01-13 14:07:06.098765Z])
       ~U[2022-01-01 00:00:00Z]
   """
   def beginning_of_year(
@@ -417,7 +417,7 @@ defmodule GoodTimes do
 
   ## Examples
 
-      iex> GoodTimes.end_of_year(~U[2022-01-13 14:07:06.098765Z])
+      iex> MoreTime.end_of_year(~U[2022-01-13 14:07:06.098765Z])
       ~U[2022-12-31 23:59:59.999999Z]
   """
   def end_of_year(
