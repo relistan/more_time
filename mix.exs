@@ -7,7 +7,15 @@ defmodule GoodTimes.MixProject do
       version: "0.1.0",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      package: [
+        licenses: ["MIT"],
+        links: %{"GitHub" => "https://github.com/relistan/good_times"}
+      ],
+      description: """
+      GoodTimes contains some helpful functions for operating on DateTime-like
+      maps. These are useful for rounding and bucketing times in a stable way.
+      """
     ]
   end
 
