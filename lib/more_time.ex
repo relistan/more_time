@@ -423,7 +423,7 @@ defmodule MoreTime do
   def end_of_year(
         %{
           year: year,
-          month: month,
+          month: _,
           day: _,
           calendar: calendar,
           hour: _,
@@ -437,7 +437,7 @@ defmodule MoreTime do
         } = dt
       ) do
     last_month_in_year = calendar.months_in_year(year)
-    last_day_in_month = calendar.days_in_month(year, month)
+    last_day_in_month = calendar.days_in_month(year, last_month_in_year)
 
     dt
     |> Map.merge(%{month: last_month_in_year, day: last_day_in_month})
