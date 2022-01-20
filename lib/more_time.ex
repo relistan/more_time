@@ -93,7 +93,7 @@ defmodule MoreTime do
         1,
         :hour
       ) do
-    Map.merge(dt, %{minute: 0, second: 0, microsecond: {0, 0}})
+    %{dt | minute: 0, second: 0, microsecond: {0, 0}}
   end
 
   def bucket(
@@ -139,7 +139,7 @@ defmodule MoreTime do
         1,
         :minute
       ) do
-    Map.merge(dt, %{second: 0, microsecond: {0, 0}})
+    %{dt | second: 0, microsecond: {0, 0}}
   end
 
   def bucket(
@@ -216,7 +216,7 @@ defmodule MoreTime do
           time_zone: _
         } = dt
       ) do
-    Map.merge(dt, %{hour: 0, minute: 0, second: 0, microsecond: {0, 0}})
+    %{dt | hour: 0, minute: 0, second: 0, microsecond: {0, 0}}
   end
 
   @doc """
@@ -244,7 +244,7 @@ defmodule MoreTime do
           time_zone: _
         } = dt
       ) do
-    Map.merge(dt, %{hour: 23, minute: 59, second: 59, microsecond: {999_999, 6}})
+    %{dt | hour: 23, minute: 59, second: 59, microsecond: {999_999, 6}}
   end
 
   @doc """
@@ -341,8 +341,7 @@ defmodule MoreTime do
           time_zone: _
         } = dt
       ) do
-    dt
-    |> Map.put(:day, 1)
+    %{dt | day: 1}
     |> beginning_of_day()
   end
 
@@ -405,8 +404,7 @@ defmodule MoreTime do
           time_zone: _
         } = dt
       ) do
-    dt
-    |> Map.merge(%{month: 1, day: 1})
+    %{dt | month: 1, day: 1}
     |> beginning_of_day()
   end
 
@@ -439,8 +437,7 @@ defmodule MoreTime do
     last_month_in_year = calendar.months_in_year(year)
     last_day_in_month = calendar.days_in_month(year, last_month_in_year)
 
-    dt
-    |> Map.merge(%{month: last_month_in_year, day: last_day_in_month})
+    %{dt | month: last_month_in_year, day: last_day_in_month}
     |> end_of_day()
   end
 
